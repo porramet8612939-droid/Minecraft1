@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>เอกการประถมศึกษา มหาวิทยาลัยราชภัฏภูเก็ต</title>
+<meta name="description" content="วิชาเอกการประถมศึกษา คณะครุศาสตร์ มหาวิทยาลัยราชภัฏภูเก็ต">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Kanit:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--u:min(calc(100vw/1600),calc(100vh/900));--cream:#f2f0e4;box-sizing:border-box}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#050814;overflow:hidden}
+body{color:var(--cream);font-family:VT323,monospace}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+#valley{position:fixed;inset:0}
+#valley canvas{display:block;width:100%;height:100%}
+.ui{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity 1.6s ease}
+.ui.on{opacity:1}
+.ui a,.ui button{pointer-events:auto}
+header{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;justify-content:space-between;padding:calc(24*var(--u) + env(safe-area-inset-top,0px)) calc(44*var(--u)) 0}
+.logo{font:calc(18*var(--u))/1 "Press Start 2P",monospace;text-shadow:calc(3*var(--u)) calc(3*var(--u)) 0 #2b2b2b}
+nav{display:flex;align-items:center;gap:calc(12*var(--u));font:500 max(15px,calc(21*var(--u)))/1 Kanit,sans-serif}
+nav a:not(.btn){text-shadow:2px 2px 0 #2b2b2b;transition:opacity .2s}nav a:not(.btn):hover{opacity:.6}
+.btn{display:inline-grid;place-items:center;background:#7d7d7d;color:#fff;border:max(2px,calc(3*var(--u))) solid;border-color:#dcdcdc #3a3a3a #3a3a3a #dcdcdc;box-shadow:inset max(-3px,calc(-3*var(--u))) max(-3px,calc(-3*var(--u))) 0 #585858;text-shadow:2px 2px 0 #3b3b3b;transition:background .15s}
+.btn:hover{background:#6a7bb8}
+.pill{height:calc(50*var(--u));padding:0 calc(24*var(--u));font:500 max(15px,calc(20*var(--u)))/1 Kanit,sans-serif}
+.hero{position:absolute;left:0;right:0;top:50%;transform:translateY(-46%);display:flex;flex-direction:column;align-items:center;text-align:center}
+h1{font:600 calc(104*var(--u))/1.2 Kanit,sans-serif;white-space:nowrap}
+.cap{margin-top:calc(36*var(--u));font:500 calc(38*var(--u))/1.2 Kanit,sans-serif}
+body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,5,.55))}
+.px{display:block;image-rendering:pixelated;max-width:100%;height:auto}
+h1 .px{width:calc(var(--w)*4.7*var(--u))}
+.cap .px{width:calc(var(--w)*2.9*var(--u))}
+.go{margin-top:calc(34*var(--u));width:calc(64*var(--u));height:calc(64*var(--u))}
+.go svg{width:calc(28*var(--u));height:calc(28*var(--u));fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:square}
+.corner{position:absolute;right:calc(44*var(--u));bottom:calc(44*var(--u) + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:calc(18*var(--u));font-size:calc(22*var(--u));text-transform:uppercase;letter-spacing:.14em;text-shadow:2px 2px 0 #2b2b2b}
+.corner i{width:2px;height:calc(26*var(--u));background:rgba(242,240,228,.5)}
+.sound{width:calc(40*var(--u));height:calc(40*var(--u));min-width:32px;min-height:32px}
+.sound svg{width:70%;height:70%;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:square}
+.sound .w{transition:opacity .3s}.sound[aria-pressed=false] .w{opacity:0}
+.sound[aria-pressed=true] .x{opacity:0}
+.loader{position:fixed;inset:0;z-index:3;display:grid;place-items:center;background:#050814;transition:opacity 1s ease;pointer-events:none}
+.loader.gone{opacity:0}
+.loader span{width:14px;height:14px;background:#6fcf4a;animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(.4);opacity:.4}}
+.hero{transition:opacity .4s}.ui.open .hero{opacity:0;pointer-events:none}
+.panel{position:fixed;inset:0;z-index:2;display:grid;place-items:center;padding:max(16px,calc(40*var(--u)));background:rgba(2,4,14,.5);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .3s,visibility .3s}
+.panel.show{opacity:1;visibility:visible;pointer-events:auto}
+.box{position:relative;display:flex;flex-direction:column;width:min(calc(1060*var(--u)),94vw);max-height:min(calc(660*var(--u)),82vh);min-height:0;background:#3b3b42;border:max(3px,calc(4*var(--u))) solid;border-color:#9a9aa3 #17171b #17171b #9a9aa3;box-shadow:inset max(-3px,calc(-4*var(--u))) max(-3px,calc(-4*var(--u))) 0 #26262c,0 20px 60px rgba(0,0,0,.6);padding:max(14px,calc(26*var(--u))) max(14px,calc(30*var(--u)))}
+.box h2{font:600 max(22px,calc(38*var(--u)))/1.2 Kanit,sans-serif;padding-right:max(44px,calc(60*var(--u)));text-shadow:2px 2px 0 #1a1a1e}
+.x{position:absolute;top:max(8px,calc(14*var(--u)));right:max(8px,calc(14*var(--u)));width:max(34px,calc(46*var(--u)));height:max(34px,calc(46*var(--u)));font:max(10px,calc(14*var(--u))) "Press Start 2P",monospace}
+.body{display:flex;gap:max(12px,calc(22*var(--u)));margin-top:max(12px,calc(20*var(--u)));min-height:0;flex:1}
+.tabs{display:flex;flex-direction:column;gap:max(8px,calc(10*var(--u)));flex:0 0 max(210px,calc(300*var(--u)))}
+.tab{display:block;text-align:left;padding:max(8px,calc(12*var(--u))) max(10px,calc(16*var(--u)));font:500 max(15px,calc(20*var(--u)))/1.3 Kanit,sans-serif}
+.tab.on{background:#4f8a34;border-color:#8fd16a #23401a #23401a #8fd16a;box-shadow:inset -3px -3px 0 #386626}
+.txt{flex:1;min-width:0;overflow:auto;background:#222227;border:max(2px,calc(3*var(--u))) solid;border-color:#101013 #6c6c75 #6c6c75 #101013;padding:max(14px,calc(24*var(--u)));font:400 max(16px,calc(22*var(--u)))/1.75 Kanit,sans-serif}
+.txt h3{font:600 1.1em/1.4 Kanit,sans-serif;color:#ffd866;margin-bottom:.3em}
+.txt p+p,.txt h3+ul,.txt p+ul,.txt p+ol{margin-top:.6em}
+.txt ul,.txt ol{padding-left:1.4em}.txt li{margin-top:.4em}
+.txt a{color:#8fd1ff;text-decoration:underline;text-underline-offset:3px}.txt a:hover{color:#fff}
+a:focus-visible,button:focus-visible{outline:2px solid var(--cream);outline-offset:3px}
+@media (max-width:820px){
+  :root{--u:1px}
+  header{padding:calc(18px + env(safe-area-inset-top,0px)) 18px 0}
+  header{flex-wrap:wrap;row-gap:10px}
+  nav{order:3;width:100%;overflow-x:auto;gap:18px;white-space:nowrap;padding-bottom:4px}
+  .pill{height:38px;padding:0 14px;font-size:15px}
+  .body{flex-direction:column}.tabs{flex:none;flex-direction:row;flex-wrap:wrap}.tab{flex:1 1 auto}
+  .logo{font-size:13px}
+  .hero{left:20px;right:20px}
+  h1{white-space:normal}
+  h1 .px{width:calc(var(--w)*1.8px)}
+  .cap .px{width:calc(var(--w)*1.6px)}
+  .corner{left:20px;right:20px;justify-content:center;bottom:calc(30px + env(safe-area-inset-bottom,0px));font-size:18px}
+}
+@media (prefers-reduced-motion:reduce){.loader span{animation:none}}
+</style>
+</head>
+<body>
+<div id="valley" aria-hidden="true"></div>
+<div class="ui" id="ui">
+  <header>
+    <a class="logo" href="#" aria-label="Elementary Education">ELEMENTARY EDU</a>
+    <nav aria-label="Main"><a class="btn pill" href="#" data-k="about">เกี่ยวกับวิชาเอก</a><a class="btn pill" href="#" data-k="curr">หลักสูตร</a><a class="btn pill" href="#" data-k="study">การเรียนการสอน</a><a class="btn pill" href="#" data-k="act">กิจกรรม</a><a class="btn pill" href="#" data-k="contact">ติดต่อเรา</a></nav>
+  </header>
+  <section class="hero">
+    <h1>เอกการประถมศึกษา</h1>
+    <p class="cap">มหาวิทยาลัยราชภัฏภูเก็ต</p>
+    
+  </section>
+  <div class="corner"><span>Scroll to wander</span><i></i>
+    <button class="btn sound" id="sound" aria-pressed="false" aria-label="Ambient sound"><svg viewBox="0 0 24 24"><path d="M3 9.5v5h4L12 18V6L7 9.5Z"/><path class="w" d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/><path class="x" d="m16 10 4 4m0-4-4 4"/></svg></button>
+  </div>
+</div>
+<div class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="pt"><div class="box"><button class="btn x" id="pclose" aria-label="ปิด">X</button><h2 id="pt"></h2><div class="body"><div class="tabs" id="tabs"></div><div class="txt" id="txt" tabindex="0"></div></div></div></div>
+<div class="loader" id="loader"><span></span></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+const L=208,W=76,P=L/8,TAU=Math.PI*2;
+const hash=(a,b)=>{const h=Math.sin(a*127.1+b*311.7)*43758.5453;return h-Math.floor(h)};
+const wrap=n=>((n%P)+P)%P,sm=t=>t*t*(3-2*t);
+function vn(x,z){const xi=Math.floor(x),zi=Math.floor(z),fx=x-xi,fz=z-zi;
+  const a=hash(xi,wrap(zi)),b=hash(xi+1,wrap(zi)),c=hash(xi,wrap(zi+1)),d=hash(xi+1,wrap(zi+1));
+  const u=sm(fx),v=sm(fz);return a+(b-a)*u+(c-a)*v+(a-b-c+d)*u*v}
+const px=z=>12*Math.sin(TAU*2*z/L)+5*Math.sin(TAU*5*z/L+1);
+function hAt(x,z){z=((Math.round(z)%L)+L)%L;const d=Math.abs(x-px(z));
+  const hill=vn(x/8+100,z/8)*11+vn(x/4+50,z/4)*3;
+  const k=sm(Math.min(1,Math.max(0,(d-5)/18)));
+  if(d>3&&vn(x/9+300,z/9)>.7)return 1;
+  return Math.floor(2+vn(x/3+7,z/3)*1.6+hill*k)}
+
+const host=document.getElementById('valley');
+const renderer=new THREE.WebGLRenderer({antialias:false});
+const dpr=Math.min(2,window.devicePixelRatio||1);
+renderer.setPixelRatio(dpr);host.appendChild(renderer.domElement);
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+const FOG=0x0b1438;
+const scene=new THREE.Scene();scene.background=new THREE.Color(FOG);scene.fog=new THREE.Fog(FOG,22,100);
+const cam=new THREE.PerspectiveCamera(72,1,.1,130);
+scene.add(new THREE.HemisphereLight(0x8aa0e0,0x1c2238,.75));
+const moonL=new THREE.DirectionalLight(0xbcccff,1.45);moonL.castShadow=true;{const m=innerWidth<820?2048:4096;moonL.shadow.mapSize.set(m,m)}
+const shc=moonL.shadow.camera;shc.left=shc.bottom=-56;shc.right=shc.top=56;shc.near=1;shc.far=240;shc.updateProjectionMatrix();
+moonL.shadow.bias=-.0004;moonL.shadow.normalBias=.06;scene.add(moonL,moonL.target);
+const lamp=new THREE.PointLight(0xffb36a,.5,22,2);scene.add(lamp);
+const lanL=new THREE.PointLight(0xffa24a,1.2,24,2),fireL=new THREE.PointLight(0xff7a22,1.4,22,2);scene.add(lanL,fireL);
+
+// 16x16 pixel textures drawn in code
+function mkTex(fn){const c=document.createElement('canvas');c.width=c.height=16;const x=c.getContext('2d');
+  for(let j=0;j<16;j++)for(let i=0;i<16;i++){const r=fn(i,j);if(!r)continue;x.fillStyle='rgb('+(r[0]|0)+','+(r[1]|0)+','+(r[2]|0)+')';x.fillRect(i,j,1,1)}
+  const t=new THREE.CanvasTexture(c);t.magFilter=t.minFilter=THREE.NearestFilter;t.generateMipmaps=false;return t}
+const R=(i,j,s)=>hash(i*7.7+s,j*3.3+s*2.1);
+const J=(b,i,j,s,a)=>{const v=(R(i,j,s)-.5)*a;return[b[0]+v,b[1]+v,b[2]+v]};
+const pick=(p,i,j,s)=>p[(R(i,j,s)*p.length)|0];
+const GP=[[88,150,56],[76,132,48],[104,170,66],[66,116,40],[96,160,60],[82,142,52],[116,184,76]];
+const DP=[[134,96,64],[121,85,58],[110,76,52],[96,66,46],[121,85,58],[146,106,74],[85,58,40],[121,85,58],[128,92,62]];
+const grassPx=(i,j)=>pick(GP,i,j,1),dirtPx=(i,j)=>pick(DP,i,j,2);
+const tGT=mkTex(grassPx);
+const tDirt=mkTex(dirtPx);
+const tGS=mkTex((i,j)=>{const f=2+(R(i,0,3)*3|0);return j<f||(j<5&&R(i,j,4)>.7)?grassPx(i,j):(j===f&&R(i,j,6)>.5?[92,64,44]:dirtPx(i,j))});
+const tStone=mkTex((i,j)=>pick([[118,118,122],[132,132,136],[104,104,108],[124,124,128]],i>>1,j>>1,4));
+const tW=mkTex((i,j)=>pick([[40,92,170],[48,104,184],[34,80,156],[56,116,196]],i,j,20));
+const BK=[[102,78,48],[88,66,40],[116,90,56],[78,58,36]];
+const tLogS=mkTex((i,j)=>R(i,j,8)>.75?pick(BK,i,j,9):pick(BK,i,0,6));
+const tLogT=mkTex((i,j)=>{const d=Math.max(Math.abs(i-7.5),Math.abs(j-7.5))|0;return J(d%2?[152,122,74]:[112,86,52],i,j,7,12)});
+const tLeaf=mkTex((i,j)=>R(i,j,9)>.88?null:pick([[62,134,40],[48,112,32],[74,150,48],[40,96,28],[56,122,36]],i,j,8));
+const tGrass=mkTex((i,j)=>{const b=i>>1,tp=16-(3+R(b,0,11)*12+(i&1?0:1));if(R(b,0,12)<.3||j<tp)return null;const c=pick(GP,i,j,13),f=1.2-.55*(j-tp)/(16-tp);return[c[0]*f,c[1]*f,c[2]*f]});
+const tFl=c=>mkTex((i,j)=>{if(i>=7&&i<=8&&j>=7)return[52,120,40];
+  if(i>=5&&i<=10&&j>=2&&j<=6&&!((i===5||i===10)&&(j===2||j===6)))return i>=7&&i<=8&&j>=3&&j<=5?[255,220,80]:J(c,i,j,14,22);return null});
+const lam=t=>new THREE.MeshLambertMaterial({map:t,vertexColors:true});
+const spr=t=>new THREE.MeshLambertMaterial({map:t,alphaTest:.5,side:THREE.DoubleSide});
+
+tW.wrapS=tW.wrapT=THREE.RepeatWrapping;tW.repeat.set(200,200);
+const water=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshLambertMaterial({map:tW,transparent:true,opacity:.8}));
+water.rotation.x=-Math.PI/2;water.receiveShadow=true;scene.add(water);
+// world data
+const top=[],dirt=[],stone=[],grass=[],grassT=[],camp=[],smoke=[],trunk=[],leaves=[],lant=[],fl=[];
+const FC=[[210,40,40],[240,110,180],[245,215,60],[240,130,40],[160,100,230],[110,220,230]];
+const fs=FC.map(()=>[]);
+for(let ix=-W/2;ix<W/2;ix++)for(let z=0;z<L;z++){
+  const h=hAt(ix,z),d=Math.abs(ix-px(z));
+  const nb=Math.min(hAt(ix-1,z),hAt(ix+1,z),hAt(ix,z-1),hAt(ix,z+1));
+  top.push(ix,h-1,z);
+  for(let k=Math.max(nb,h-8);k<h-1;k++)(k<h-4?stone:dirt).push(ix,k,z);
+  const r=hash(ix+.5,z+.5);
+  if(d>2&&h>1&&h<10&&hash(ix*2.1,z*1.3)<(d<18?.5:.3))(hash(ix,z*1.7)>.55?grassT:grass).push(ix+(hash(z,ix)-.5)*.6,h,z+(hash(ix,z+3)-.5)*.6);
+  if(d>2&&h>1&&r>(d<16?.86:.95)){const t=(r*1000|0)%6,fx=ix+(hash(z,ix)-.5)*.5,fz=z+(hash(ix,z+9)-.5)*.5;
+    fs[t].push(fx,h,fz);fl.push(fx,h+.75,fz,FC[t][0]/255,FC[t][1]/255,FC[t][2]/255,hash(z*2.3,ix*1.1))}
+  else if(d>7&&h>1&&r<.008)trunk.push([ix,h,z,4+(r*997|0)%3,1]);
+}
+for(let zz=24;zz<L;zz+=52){const x=Math.round(px(zz))+5,h=hAt(x,zz);trunk.push([x,h,zz,5,0]);lant.push(x,h+5,zz);fl.push(x,h+5.5,zz,1,.65,.25,.5)}
+for(let zz=50;zz<L;zz+=52){const x=Math.round(px(zz))-4,h=hAt(x,zz);if(h<2)continue;trunk.push([x,h,zz,1,0]);camp.push(x,h+1,zz);
+  for(let q=0;q<3;q++)fl.push(x+(q-1)*.2,h+1.3,zz,1,.5,.15,.3+q*.2);for(let q=0;q<26;q++)smoke.push(x,h+1.4,zz,q/26)}
+const trunkC=[];
+trunk.forEach(([x,h,z,n,tree])=>{for(let j=0;j<n;j++)trunkC.push(x,h+j,z);
+  if(tree){for(const [dy,Rr] of [[n-2,2],[n-1,2],[n,1],[n+1,1]])for(let dx=-Rr;dx<=Rr;dx++)for(let dz=-Rr;dz<=Rr;dz++){
+    const c=Math.abs(dx)===Rr&&Math.abs(dz)===Rr;
+    if(dy===n+1&&c)continue;
+    if(c&&hash(x+dx*7,z+dz*5+dy)>.5)continue;
+    if(dx===0&&dz===0&&dy<n)continue;
+    leaves.push(x+dx,h+dy,z+dz)}}});
+
+const dm=new THREE.Object3D(),cc=new THREE.Color();
+function inst(geo,mat,arr,o){o=o||{};const n=arr.length/3,m=new THREE.InstancedMesh(geo,mat,n);
+  for(let k=0;k<n;k++){const x=arr[k*3],y=arr[k*3+1],z=arr[k*3+2],r=hash(x*1.3,z+y);
+    dm.position.set(x,y+(o.yo===undefined?.5:o.yo),z);dm.rotation.y=o.rot?r*3:0;dm.scale.setScalar(o.sc?o.sc*(.8+.5*r):1);dm.updateMatrix();m.setMatrixAt(k,dm.matrix);
+    const b=.82+.34*r;cc.setRGB(b,b,b);m.setColorAt(k,cc)}
+  m.castShadow=!o.ns;m.receiveShadow=true;m.frustumCulled=false;return m}
+const cube=new THREE.BoxGeometry(1,1,1);
+{const c=new Float32Array(72);for(let f=0;f<6;f++)for(let v=0;v<4;v++){const s=f===2?1:f===3?.6:(v<2?1:.86);c.fill(s,(f*4+v)*3,(f*4+v)*3+3)}cube.setAttribute('color',new THREE.BufferAttribute(c,3))}
+const cross=(()=>{const g=new THREE.BufferGeometry(),s=.55;
+  g.setAttribute('position',new THREE.Float32BufferAttribute([-s,0,0,s,0,0,s,1.1,0,-s,1.1,0,0,0,-s,0,0,s,0,1.1,s,0,1.1,-s],3));
+  g.setAttribute('uv',new THREE.Float32BufferAttribute([0,0,1,0,1,1,0,1,0,0,1,0,1,1,0,1],2));
+  g.setAttribute('normal',new THREE.Float32BufferAttribute(new Array(24).fill(0).map((_,i)=>i%3===1?1:0),3));
+  g.setIndex([0,1,2,0,2,3,4,5,6,4,6,7]);return g})();
+const sideG=lam(tGS);const leafDepth=new THREE.MeshDepthMaterial({depthPacking:THREE.RGBADepthPacking,map:tLeaf,alphaTest:.5});
+const grp=new THREE.Group();
+grp.add(inst(cube,[sideG,sideG,lam(tGT),lam(tDirt),sideG,sideG],top),
+  inst(cube,lam(tDirt),dirt),inst(cube,lam(tStone),stone),
+  inst(cube,[lam(tLogS),lam(tLogS),lam(tLogT),lam(tLogT),lam(tLogS),lam(tLogS)],trunkC),
+  (()=>{const m=inst(cube,new THREE.MeshLambertMaterial({map:tLeaf,alphaTest:.5,vertexColors:true,side:THREE.DoubleSide}),leaves);m.customDepthMaterial=leafDepth;return m})(),
+  inst(cross,spr(tGrass),grass,{yo:0,rot:1,sc:1,ns:1}),inst(cross,spr(tGrass),grassT,{yo:0,rot:1,sc:1.7,ns:1}));
+fs.forEach((a,t)=>grp.add(inst(cross,spr(tFl(FC[t])),a,{yo:0,rot:1,sc:.62,ns:1})));
+const lm=new THREE.InstancedMesh(new THREE.BoxGeometry(.6,.8,.6),new THREE.MeshBasicMaterial({color:0xffa83a}),lant.length/3);
+for(let k=0;k<lant.length/3;k++){dm.position.set(lant[k*3],lant[k*3+1]+.5,lant[k*3+2]);dm.rotation.y=0;dm.scale.setScalar(1);dm.updateMatrix();lm.setMatrixAt(k,dm.matrix)}
+lm.frustumCulled=false;grp.add(lm,inst(new THREE.BoxGeometry(.6,.9,.6),new THREE.MeshBasicMaterial({color:0xff8a1f}),camp,{yo:.45,ns:1}));
+
+// glowing points over flowers and lanterns
+const n=fl.length/7,pos=new Float32Array(n*3),col=new Float32Array(n*3),seed=new Float32Array(n);
+for(let k=0;k<n;k++){pos.set(fl.slice(k*7,k*7+3),k*3);col.set(fl.slice(k*7+3,k*7+6),k*3);seed[k]=fl[k*7+6]}
+const pg=new THREE.BufferGeometry();
+pg.setAttribute('position',new THREE.BufferAttribute(pos,3));
+pg.setAttribute('aCol',new THREE.BufferAttribute(col,3));
+pg.setAttribute('aSeed',new THREE.BufferAttribute(seed,1));
+const U={uTime:{value:0},uDisp:{value:0},uPx:{value:1}};
+const pm=new THREE.ShaderMaterial({uniforms:U,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,
+vertexShader:`attribute vec3 aCol;attribute float aSeed;uniform float uTime,uDisp,uPx;varying vec3 vC;varying float vF;
+void main(){float s=aSeed;vec3 p=position;
+vec3 dir=normalize(vec3(sin(s*91.7),abs(cos(s*47.3))*.6+.3,cos(s*63.1)));
+p+=dir*uDisp*(2.+s*6.);p.y+=sin(uTime*1.3+s*30.)*.08+sin(uTime*.8+s*20.)*.2*uDisp;
+vec4 mv=modelViewMatrix*vec4(p,1.);float d=-mv.z;float bl=smoothstep(60.,6.,d);
+gl_PointSize=clamp(uPx*(30.+bl*130.)/max(d,1.)*(.85+.3*sin(uTime*2.+s*40.)),2.,60.);
+gl_Position=projectionMatrix*mv;vC=aCol;vF=smoothstep(100.,55.,d);}`,
+fragmentShader:`varying vec3 vC;varying float vF;
+void main(){vec2 q=abs(gl_PointCoord-.5)*2.;float sq=1.-step(.3,max(q.x,q.y));
+float halo=pow(1.-min(1.,length(gl_PointCoord-.5)*2.),2.)*.75;
+vec3 c=vC*(sq*1.3+halo)+vec3(sq*.3);gl_FragColor=vec4(c,(sq*.8+halo)*vF);}`});
+const pts=new THREE.Points(pg,pm);pts.frustumCulled=false;grp.add(pts);
+const sn=smoke.length/4,spos=new Float32Array(sn*3),ssd=new Float32Array(sn);
+for(let k=0;k<sn;k++){spos.set(smoke.slice(k*4,k*4+3),k*3);ssd[k]=smoke[k*4+3]}
+const sgm=new THREE.BufferGeometry();sgm.setAttribute('position',new THREE.BufferAttribute(spos,3));sgm.setAttribute('aSeed',new THREE.BufferAttribute(ssd,1));
+const smm=new THREE.ShaderMaterial({uniforms:U,transparent:true,depthWrite:false,
+vertexShader:`attribute float aSeed;uniform float uTime,uPx;varying float vA;
+void main(){float t=fract(uTime*.12+aSeed);vec3 p=position;p.y+=t*10.;p.x+=sin(t*6.+aSeed*40.)*t*1.5+t*t*3.;p.z+=cos(t*5.+aSeed*30.)*t;
+vec4 mv=modelViewMatrix*vec4(p,1.);gl_PointSize=clamp(uPx*(80.+t*260.)/max(-mv.z,1.),1.,90.);gl_Position=projectionMatrix*mv;
+vA=(1.-t)*smoothstep(0.,.08,t)*.55*smoothstep(90.,40.,-mv.z);}`,
+fragmentShader:`varying float vA;void main(){vec2 q=abs(gl_PointCoord-.5)*2.;if(max(q.x,q.y)>.85)discard;gl_FragColor=vec4(.62,.6,.64,vA);}`});
+const smk=new THREE.Points(sgm,smm);smk.frustumCulled=false;grp.add(smk);
+const grpB=grp.clone();scene.add(grp,grpB);
+grpB.traverse(o=>{if(o.isInstancedMesh&&o.material&&o.material.map===tLeaf)o.customDepthMaterial=leafDepth});
+
+// sky: stars, blocky moon, night clouds
+const sky=new THREE.Group();scene.add(sky);
+const sp=new Float32Array(900);
+for(let k=0;k<300;k++){const a=Math.random()*TAU,e=Math.random()*1.2+.08,r=110;sp.set([Math.cos(a)*Math.cos(e)*r,Math.sin(e)*r,Math.abs(Math.sin(a)*Math.cos(e))*r],k*3)}
+const sg=new THREE.BufferGeometry();sg.setAttribute('position',new THREE.BufferAttribute(sp,3));
+sky.add(new THREE.Points(sg,new THREE.PointsMaterial({color:0xffffff,size:2.2,sizeAttenuation:false,fog:false})));
+const moon=new THREE.Mesh(new THREE.BoxGeometry(14,14,2),new THREE.MeshBasicMaterial({color:0xe9eefc,fog:false}));
+moon.position.set(-66,55,68);sky.add(moon);
+const cmat=new THREE.MeshBasicMaterial({color:0x2a3a78,transparent:true,opacity:.5,fog:false});
+for(let k=0;k<26;k++){const c=new THREE.Mesh(new THREE.BoxGeometry(14+Math.random()*22,3,8+Math.random()*10),cmat);
+  c.position.set((Math.random()-.5)*240,48+Math.random()*26,Math.random()*120);c.userData.s=.5+Math.random();sky.add(c)}
+
+function resize(){const w=innerWidth,h=innerHeight;renderer.setSize(w,h);cam.aspect=w/h;cam.updateProjectionMatrix();U.uPx.value=dpr*h/900*(w<820?1.2:1)}
+addEventListener('resize',resize);resize();
+
+let z=0,boost=0,add=0,hover=0,hoverT=0,mx=0,my=0,smx=0,smy=0,camY=10,ty=null;
+addEventListener('wheel',e=>{add+=e.deltaY*.04},{passive:true});
+addEventListener('touchstart',e=>{ty=e.touches[0].clientY},{passive:true});
+addEventListener('touchmove',e=>{const y=e.touches[0].clientY;if(ty!=null)add+=(ty-y)*.1;ty=y},{passive:true});
+addEventListener('pointermove',e=>{mx=e.clientX/innerWidth*2-1;my=e.clientY/innerHeight*2-1});
+
+let ac,master,lpf,muted=true;
+function initAudio(){
+  ac=new (window.AudioContext||window.webkitAudioContext)();master=ac.createGain();master.gain.value=0;
+  lpf=ac.createBiquadFilter();lpf.type='lowpass';lpf.frequency.value=2400;master.connect(lpf);lpf.connect(ac.destination);
+  [130.8,196,261.6,329.6].forEach((f,k)=>{const o=ac.createOscillator();o.type=k%2?'sine':'triangle';o.frequency.value=f;o.detune.value=k*5;const g=ac.createGain();g.gain.value=.045;o.connect(g);g.connect(master);o.start()});
+  const len=ac.sampleRate*3,ib=ac.createBuffer(2,len,ac.sampleRate);
+  for(let c=0;c<2;c++){const d=ib.getChannelData(c);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.6)}
+  const rv=ac.createConvolver();rv.buffer=ib;const rg=ac.createGain();rg.gain.value=.55;rv.connect(rg);rg.connect(master);
+  const sc=[261.6,293.7,329.6,392,440,523.3,587.3,659.3,784];let idx=3;
+  const note=(f,v,t)=>{[[1,1],[2,.25],[3,.08]].forEach(([m,a],q)=>{const o=ac.createOscillator(),g=ac.createGain();o.type=q?'sine':'triangle';o.frequency.value=f*m;
+    g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v*a,t+.012);g.gain.exponentialRampToValueAtTime(.0008,t+4.2/(q+1));
+    o.connect(g);g.connect(master);g.connect(rv);o.start(t);o.stop(t+4.4)})};
+  const step=()=>{setTimeout(step,1800+Math.random()*3200);if(muted||ac.state!=='running')return;const t=ac.currentTime+.05;
+    if(Math.random()<.18)return;
+    idx=Math.max(0,Math.min(sc.length-1,idx+[-2,-1,-1,1,1,2][Math.random()*6|0]));
+    note(sc[idx],.13,t);
+    if(Math.random()<.3)note(sc[Math.max(0,idx-2)],.08,t+.45);
+    if(Math.random()<.14){note(130.8,.12,t);note(196,.09,t+.1)}};
+  step();
+}
+const sound=document.getElementById('sound');
+sound.onclick=()=>{if(!ac)initAudio();ac.resume();muted=!muted;master.gain.setTargetAtTime(muted?0:.9,ac.currentTime,.6);sound.setAttribute('aria-pressed',String(!muted))};
+const setHover=v=>{if(window.__open&&!v)return;hoverT=v;if(lpf)lpf.frequency.setTargetAtTime(v?300:2400,ac.currentTime,.5)};
+window.__hover=setHover;
+
+const LD=new THREE.Vector3(-54,45,55.5),LF=LD.clone().negate().normalize(),LR=new THREE.Vector3().crossVectors(LF,new THREE.Vector3(0,1,0)).normalize(),LU=new THREE.Vector3().crossVectors(LR,LF).normalize(),TS=112/(innerWidth<820?2048:4096),TP=new THREE.Vector3();
+let last=performance.now(),first=true;
+function frame(now){requestAnimationFrame(frame);
+  const dt=Math.min(.05,(now-last)/1000);last=now;
+  boost=Math.min(14,boost+add);add=0;boost*=Math.exp(-2.6*dt);
+  hover+=(hoverT-hover)*(1-Math.exp(-2.5*dt));
+  z+=(4+boost*3)*(1-hover)*dt;
+  smx+=(mx-smx)*(1-Math.exp(-4*dt));smy+=(my-smy)*(1-Math.exp(-4*dt));
+  U.uTime.value=now/1000;U.uDisp.value=hover;
+  const cx=px(z),lz=z+14,lx=px(lz);
+  const g=Math.max(hAt(cx,z),hAt(cx,z+5),hAt(cx,z+10));
+  camY+=(g+4.5+Math.sin(now/1500)*.4-camY)*(1-Math.exp(-2*dt));
+  cam.position.set(cx+smx*1.5,camY,z);
+  cam.lookAt(lx+smx*9,camY-2.4-smy*3,lz);
+  lamp.position.set(cx+smx*1.5,camY+1,z+3);lamp.intensity=.5+Math.sin(now/230)*.05;
+  TP.set(cx,camY-4,z+30);{const pr=TP.dot(LR),pu=TP.dot(LU);TP.addScaledVector(LR,Math.round(pr/TS)*TS-pr).addScaledVector(LU,Math.round(pu/TS)*TS-pu)}
+  moonL.target.position.copy(TP);moonL.position.copy(TP).add(LD);
+  water.position.set(Math.round(cx),1.85,Math.round(z+60));tW.offset.x=(now/90000)%1;
+  const base=Math.floor((z-L*.5)/L)*L;grp.position.z=base;grpB.position.z=base+L;
+  const near=(arr,yo)=>{let b=null,bd=1e9;for(let c=0;c<2;c++)for(let k=0;k<arr.length;k+=3){const dz=arr[k+2]+base+c*L-z,dx=arr[k]-cx,d=dx*dx+dz*dz;if(d<bd){bd=d;b=[arr[k],arr[k+1]+yo,arr[k+2]+base+c*L]}}return b};
+  const nl=near(lant,.5),nc=near(camp,.9);
+  if(nl)lanL.position.set(nl[0],nl[1],nl[2]);if(nc)fireL.position.set(nc[0],nc[1],nc[2]);
+  lanL.intensity=1.1+Math.sin(now/310)*.1;fireL.intensity=1.3+Math.sin(now/90)*.25+Math.sin(now/37)*.1;
+  sky.position.copy(cam.position);
+  sky.children.forEach(c=>{if(c.userData.s){c.position.x+=c.userData.s*dt;if(c.position.x>130)c.position.x=-130}});
+  renderer.render(scene,cam);
+  if(first){first=false;document.getElementById('loader').classList.add('gone');setTimeout(()=>document.getElementById('ui').classList.add('on'),900)}
+}
+// Thai text as chunky pixels
+function pixelText(el,text,fpx){
+  const c=document.createElement('canvas'),x=c.getContext('2d',{willReadFrequently:true});
+  const f='600 '+fpx+'px Kanit,sans-serif';x.font=f;
+  const w=Math.ceil(x.measureText(text).width)+4,h=Math.ceil(fpx*1.7)+3;
+  c.width=w;c.height=h;x.font=f;x.fillStyle='#000';x.fillText(text,1,Math.round(fpx*1.2));
+  const a=x.getImageData(0,0,w,h).data,ow=w+1,oh=h+1,o=x.createImageData(ow,oh);
+  const set=(X,Y,r,g,b)=>{const k=(Y*ow+X)*4;o.data[k]=r;o.data[k+1]=g;o.data[k+2]=b;o.data[k+3]=255};
+  const on=(X,Y)=>a[(Y*w+X)*4+3]>120;
+  for(let Y=0;Y<h;Y++)for(let X=0;X<w;X++)if(on(X,Y))set(X+1,Y+1,43,43,43);
+  for(let Y=0;Y<h;Y++)for(let X=0;X<w;X++)if(on(X,Y))set(X,Y,242,240,228);
+  const out=document.createElement('canvas');out.width=ow;out.height=oh;out.getContext('2d').putImageData(o,0,0);
+  out.className='px';out.setAttribute('role','img');out.setAttribute('aria-label',text);out.style.setProperty('--w',ow);el.replaceChildren(out);
+}
+const t1='เอกการประถมศึกษา',t2='มหาวิทยาลัยราชภัฏภูเก็ต';
+const drawPx=()=>{pixelText(document.querySelector('h1'),t1,22);pixelText(document.querySelector('.cap'),t2,13)};
+document.fonts.load('600 22px Kanit',t1+t2).then(drawPx,drawPx);
+requestAnimationFrame(frame);
+})();
+</script>
+<script>
+(function(){
+const T={
+about:{t:'เกี่ยวกับวิชาเอก',s:[
+ {n:'วิชาเอกการประถมศึกษา',b:`<h3>Elementary Education</h3><p>วิชาเอกการประถมศึกษา คณะครุศาสตร์ มหาวิทยาลัยราชภัฏภูเก็ต</p><p>เป็นครูนักพัฒนาโรงเรียนสู่ท้องถิ่น</p>`},
+ {n:'ความเชี่ยวชาญ',b:`<h3>เชี่ยวชาญวิชาหลัก</h3><p>ภาษาไทย คณิตศาสตร์ วิทยาศาสตร์ สังคม ภาษาอังกฤษ</p><h3>รอบรู้วิชารอง</h3><p>สุขฯ พละฯ ศิลปะ ดนตรี นาฏศิลป์ การงานอาชีพ</p>`},
+ {n:'ระดับที่สอนได้',b:`<h3>สามารถสอนได้ทั้ง</h3><ul><li>ระดับปฐมวัย</li><li>ระดับประถมศึกษา</li><li>ระดับมัธยมศึกษาตอนต้น (โรงเรียนขยายโอกาส)</li></ul>`}]},
+curr:{t:'หลักสูตร',s:[
+ {n:'ชื่อหลักสูตร',b:`<p>หลักสูตรครุศาสตรบัณฑิต สาขาวิชาการศึกษา (4 ปี)</p><p>Bachelor of Education Program in Education</p><p>หลักสูตรปรับปรุง พ.ศ. 2567</p><p>วิชาเอก (เอกเดี่ยว) วิชาเอกการประถมศึกษา (Elementary Education)</p>`},
+ {n:'ชื่อปริญญาและสาขาวิชา',b:`<ul><li>ชื่อเต็ม (ไทย): ครุศาสตรบัณฑิต (การศึกษา)</li><li>ชื่อย่อ (ไทย): ค.บ. (การศึกษา)</li><li>ชื่อเต็ม (อังกฤษ): Bachelor of Education (Education)</li><li>ชื่อย่อ (อังกฤษ): B.Ed. (Education)</li><li>ชื่อสาขา (ไทย): วิชาเอกการประถมศึกษา</li><li>ชื่อสาขา (อังกฤษ): Elementary Education</li></ul>`},
+ {n:'ปรัชญาของหลักสูตร',b:`<p>การผลิตครูยุคใหม่ให้ความสำคัญในการพัฒนาครูดี มีความรู้ มีทักษะการจัดการเรียนรู้ เป็นผู้ร่วมสร้างสรรค์ในนวัตกรรมและเป็นพลเมืองที่เข้มแข็ง</p>`},
+ {n:'วัตถุประสงค์ของหลักสูตร',b:`<p>วิชาเอกการประถมศึกษา มีวัตถุประสงค์เพื่อผลิตบัณฑิตให้มีคุณภาพตามเกณฑ์มาตรฐานวิชาชีพครู โดยมีรายละเอียดดังนี้</p><ol><li>มีความรู้ในแนวคิด หลักการ และทฤษฎี เนื้อหาสาระในวิชาชีพครูและวิชาเอกการประถมศึกษา</li><li>มีทักษะการจัดการเรียนรู้ในวิชาที่หลากหลายให้ผู้เรียนได้เรียนรู้ และมีพัฒนาการตามศักยภาพ</li><li>มีจิตวิญญาณและอุดมการณ์ความเป็นครู สามารถปฏิบัติตนตามจรรยาบรรณวิชาชีพครู</li></ol>`}]},
+study:{t:'การเรียนการสอน',s:[
+ {n:'โครงการหลักสูตร',b:`<ol><li>ระบบการจัดการศึกษาระบบทวิภาค หนึ่งปีการศึกษาแบ่งออกเป็น 2 ภาคการศึกษาปกติ แต่ละภาคการศึกษาไม่น้อยกว่า 15 สัปดาห์ กรณีที่มีการจัดการศึกษาภาคฤดูร้อนให้เป็นไปตามระเบียบมหาวิทยาลัยราชภัฏภูเก็ต</li><li>วัน-เวลาในการดำเนินการเรียนการสอนในเวลาราชการ เริ่มเปิดการเรียนการสอน 2568 ภาคการศึกษาที่ 1 เดือนกรกฎาคม – เดือนตุลาคม ภาคการศึกษาที่ 2 เดือนพฤศจิกายน – เดือนมีนาคม</li></ol>`},
+ {n:'แผนการศึกษาตลอดหลักสูตร',b:`<h3>วิชาเอกการประถมศึกษา</h3><p>หน่วยกิตรวมไม่น้อยกว่า 131 หน่วยกิต</p><ol><li>เอกบังคับ ไม่น้อยกว่า 42 หน่วยกิต</li><li>เอกเลือก ไม่น้อยกว่า 18 หน่วยกิต</li></ol>`}]},
+act:{t:'กิจกรรมเสริมความเป็นครูวิชา',s:[
+ {n:'1. เตรียมความพร้อม',b:`<p>การเตรียมความพร้อมนักศึกษาการประถมศึกษา</p>`},
+ {n:'2. พัฒนาสู่วิชาชีพครู',b:`<p>การพัฒนานักศึกษาวิชาเอกการประถมศึกษาสู่วิชาชีพครู การยกระดับคุณภาพนักศึกษาวิชาเอกการประถมศึกษาโดยกระบวนการนวัตกรรมสังคม</p>`}]},
+contact:{t:'ติดต่อเรา',s:[
+ {n:'Facebook',b:`<h3>Facebook</h3><p>วิชาเอกการประถมศึกษา คณะครุศาสตร์</p><p><a href='https://www.facebook.com/share/1dxyf9KNwn/?mibextid=wwXIfr' target='_blank' rel='noopener noreferrer'>เปิดเพจ Facebook</a></p>`},
+ {n:'Instagram',b:`<h3>Instagram</h3><p>ELEMENTARY_PKRU</p><p><a href='https://www.instagram.com/elementary_pkru?gwpx=MWtqc2tzMmg0OHE3Ng==' target='_blank' rel='noopener noreferrer'>เปิด Instagram</a></p>`}]}};
+const ui=document.getElementById('ui'),panel=document.getElementById('panel'),tabs=document.getElementById('tabs'),txt=document.getElementById('txt'),pt=document.getElementById('pt'),pc=document.getElementById('pclose');
+let cur=null,opener=null;
+function sel(j){[...tabs.children].forEach((b,x)=>{b.classList.toggle('on',x===j);b.setAttribute('aria-selected',String(x===j))});txt.innerHTML=T[cur].s[j].b;txt.scrollTop=0}
+function show(k,el){cur=k;opener=el||null;pt.textContent=T[k].t;
+  tabs.replaceChildren(...T[k].s.map((s,j)=>{const b=document.createElement('button');b.className='btn tab';b.setAttribute('role','tab');b.textContent=s.n;b.onclick=()=>sel(j);return b}));
+  sel(0);panel.classList.add('show');ui.classList.add('open');window.__open=true;if(window.__hover)window.__hover(1);pc.focus()}
+function hide(){panel.classList.remove('show');ui.classList.remove('open');window.__open=false;if(window.__hover)window.__hover(0);if(opener)opener.focus()}
+document.querySelectorAll('[data-k]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();show(a.dataset.k,a)}));
+const snd=document.getElementById('sound');let auto=false;
+const kick=e=>{if(auto)return;auto=true;removeEventListener('pointerdown',kick);removeEventListener('keydown',kick);
+  if(e.target.closest&&e.target.closest('#sound'))return;if(snd.getAttribute('aria-pressed')==='false')snd.click()};
+addEventListener('pointerdown',kick);addEventListener('keydown',kick);
+pc.onclick=hide;panel.addEventListener('click',e=>{if(e.target===panel)hide()});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&window.__open)hide()});
+})();
+</script>
+</body>
+</html>
